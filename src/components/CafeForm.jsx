@@ -1,48 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, TextField, Snackbar, Alert, Grid, Paper } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from '@tanstack/react-router'; // Make sure to import useNavigate
-import { createCafe } from '../api';
+import { useNavigate } from '@tanstack/react-router';
+import { createCafe, updateCafe } from '../api'; 
 
-const CafeForm = () => {
-  const navigate = useNavigate(); // Use the navigate function
+const CafeForm = ({ cafeData, onClose, onCafeCreation }) => {
+  const navigate = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [fetchError, setFetchError] = useState(null);
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isDirty },
-  } = useForm();
-
-  // Optionally, handle fetching existing cafe data when editing
-  // useEffect(() => {
-  //   if (id) {
-  //     fetchCafe(id)
-  //       .then(data => {
-  //         if (data) {
-  //           setValue('name', data.name);
-  //           setValue('description', data.description);
-  //           setValue('location', data.location);
-  //         } else {
-  //           setFetchError('Cafe not found');
-  //         }
-  //       })
-  //       .catch(err => {
-  //         console.error("Failed to fetch cafe:", err);
-  //         setFetchError('Error fetching cafe data');
-  //       });
-  //   }
-  // }, [id, setValue]);
+  } = useForm({
+    defaultValues: {
+      name: cafeData ? cafeData.name : '',
+      description: cafeData ? cafeData.description : '',
+      location: cafeData ? cafeData.location : '',
+    },
+  });
 
   const onSubmit = async (data) => {
     try {
-      await createCafe(data);
-      navigate('/'); // Redirect to cafes page after submission
+      if (cafeData) {
+        await updateCafe(cafeData.id, data);
+      } else {
+        const newCafe = await createCafe(data);
+        onCafeCreation(newCafe.data); 
+      }
+      onClose();
+      navigate('/');
     } catch (err) {
       console.error("Error saving cafe:", err);
-      // Handle error saving the cafe
     }
   };
 
@@ -50,7 +39,7 @@ const CafeForm = () => {
     if (isDirty) {
       setSnackbarOpen(true);
     } else {
-      navigate('/'); 
+      onClose();
     }
   };
 
@@ -64,11 +53,9 @@ const CafeForm = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      style={{ minHeight: '100vh' }} 
     >
-      <Paper elevation={3} style={{ padding: '20px', width: '400px' }}> 
-        <h1>Add New Cafe</h1>
-        {/* {fetchError && <Alert severity="error">{fetchError}</Alert>} */}
+      <Paper elevation={1} style={{ padding: '30px', width: '350px' }}>
+        <h1>{cafeData ? 'Edit Cafe' : 'Add New Cafe'}</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             label="Name"

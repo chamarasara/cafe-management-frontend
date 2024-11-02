@@ -2,21 +2,20 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_BASE_URL;
 
-export const useFetchCafes = () => {
+export const useFetchCafes = (searchTerm) => {
   return useQuery({
-    queryKey: ['cafes'],
+    queryKey: ['cafes', searchTerm],
     queryFn: async () => {
-      const { data } = await axios.get(`${API_URL}/cafes?location=`);
-      console.log(data); 
+      const { data } = await axios.get(`${API_URL}/cafes${searchTerm ? `?location=${searchTerm}` : ''}`);
       return data; 
     },
+    enabled: true,
   });
 };
 
 export const fetchEmployees = async (cafeId) => {
-  console.log(cafeId)
   const response = await fetch(`${API_URL}/cafes/${cafeId}/employees`);
   if (!response.ok) {
       throw new Error('Failed to fetch employees');
