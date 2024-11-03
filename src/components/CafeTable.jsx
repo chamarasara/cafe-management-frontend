@@ -31,6 +31,7 @@ const CafeTable = ({ cafes, handleDelete, handleEditClick }) => {
                         size="small"
                         variant="outlined"
                         onClick={() => handleEditClick(params.data)}
+                        aria-label="Edit"
                         style={{ marginRight: '4px', padding: '4px 8px' }}
                     >
                         <Edit fontSize="small"/> 
@@ -41,6 +42,7 @@ const CafeTable = ({ cafes, handleDelete, handleEditClick }) => {
                         color="error"
                         onClick={() => handleDelete(params.data.id)}
                         style={{ padding: '4px 8px' }}
+                        aria-label="Delete"
                     >
                         <Delete fontSize="small"/>
                     </Button>
@@ -63,6 +65,7 @@ const CafeTable = ({ cafes, handleDelete, handleEditClick }) => {
                 columnDefs={columnDefs}
                 pagination={true}
                 paginationPageSize={10}
+                paginationPageSizeSelector={[10, 20, 50, 100]}
                 domLayout="autoHeight"
             />
         </div>

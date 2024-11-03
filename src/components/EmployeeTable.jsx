@@ -20,6 +20,7 @@ const EmployeeTable = ({ employees, handleEdit, handleDelete }) => {
           <Button
             variant="outlined"
             style={{ marginRight: '4px', padding: '4px 8px' }}
+            aria-label="Edit"
             onClick={() => handleEdit(params.data)}
           >
             <Edit fontSize="small" />
@@ -29,6 +30,7 @@ const EmployeeTable = ({ employees, handleEdit, handleDelete }) => {
             color="error"
             onClick={() => handleDelete(params.data.id)}
             style={{ padding: '4px 8px' }}
+            aria-label="Delete"
           >
             <Delete fontSize="small" />
           </Button>
@@ -45,6 +47,7 @@ const EmployeeTable = ({ employees, handleEdit, handleDelete }) => {
           columnDefs={columnDefs}
           pagination={true}
           paginationPageSize={10}
+          paginationPageSizeSelector={[10, 20, 50, 100]}
           domLayout="autoHeight"
         />
       </div>

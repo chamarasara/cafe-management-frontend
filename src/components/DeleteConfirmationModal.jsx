@@ -4,7 +4,7 @@ import { Button, Modal, Typography } from '@mui/material';
 const ConfirmationModal = ({ open, onClose, onConfirm, itemName, itemType }) => {
   return (
     <Modal open={open} onClose={onClose}>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+      <div role="dialog" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
         <div style={{ background: 'white', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
           <Typography variant="h6">
             Are you sure you want to delete "{itemName}" {itemType === 'cafe' ? 'cafe' : 'employee'}?
