@@ -5,9 +5,8 @@ import { useNavigate } from '@tanstack/react-router';
 import { createEmployee, updateEmployee, useFetchCafes } from '../api';
 import TextInput from './TextInput';
 
-const EmployeeForm = ({ employeeData, cafeId, onClose }) => {
+const EmployeeForm = ({ employeeData, onClose }) => {
   const { data: cafesData } = useFetchCafes();
-  console.log(cafesData)
   const navigate = useNavigate();
   const methods = useForm({
     defaultValues: employeeData || {},
@@ -29,7 +28,7 @@ const EmployeeForm = ({ employeeData, cafeId, onClose }) => {
         await createEmployee(formValues);
       }
       onClose();
-      navigate('/employees');
+      location.reload()
     } catch (err) {
       console.error('Error saving employee:', err);
     }

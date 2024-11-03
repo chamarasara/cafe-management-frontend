@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CafesPage from '../CafesPage';
 import { useFetchCafes, useDeleteCafe } from '../../api';
 
-// Mock the API calls
 jest.mock('../../api', () => ({
     useFetchCafes: jest.fn(),
     useDeleteCafe: jest.fn(),
@@ -22,7 +21,6 @@ const renderCafesPage = () => {
 
 describe('CafesPage', () => {
     beforeEach(() => {
-        // Reset mocks before each test
         jest.clearAllMocks();
     });
 
