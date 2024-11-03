@@ -4,13 +4,13 @@ import { Button } from '@mui/material';
 import { Link } from '@tanstack/react-router';
 import { Visibility, Edit, Delete } from '@mui/icons-material'; 
 import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 const CafeTable = ({ cafes, handleDelete, handleEditClick }) => {
 
     const columnDefs = [
         { field: 'name', headerName: 'Cafe Name', resizable: true },
-        { field: 'description', headerName: 'Description', resizable: false, minWidth: 500 },
+        { field: 'description', headerName: 'Description', resizable: false, minWidth: 350 },
         {
             field: 'employeeCount',
             headerName: 'Employees',
@@ -27,14 +27,6 @@ const CafeTable = ({ cafes, handleDelete, handleEditClick }) => {
             width: 300,
             cellRenderer: (params) => (
                 <div>
-                    <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={() => handleEditClick(params.data)}
-                        style={{ marginRight: '4px', padding: '4px 8px' }}
-                    >
-                        <Visibility fontSize="small"/>
-                    </Button>
                     <Button
                         size="small"
                         variant="outlined"

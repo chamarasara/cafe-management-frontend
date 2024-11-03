@@ -1,53 +1,100 @@
-// src/components/EmployeeForm.js
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import { createEmployee, updateEmployee } from '../api';
-import { useNavigate, useParams } from '@tanstack/react-router';
-import { Button } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Grid, Paper, MenuItem } from '@mui/material';
+import { useForm, FormProvider } from 'react-hook-form';
+import { useNavigate } from '@tanstack/react-router';
+import { createEmployee, updateEmployee, useFetchCafes } from '../api';
+import TextInput from './TextInput';
 
-const EmployeeForm = ({ handleSubmit, pristine, submitting }) => {
+const EmployeeForm = ({ employeeData, cafeId, onClose }) => {
+  const { data: cafesData } = useFetchCafes();
+  console.log(cafesData)
   const navigate = useNavigate();
-  const { id } = useParams();
+  const methods = useForm({
+    defaultValues: employeeData || {},
+  });
+
+  const { handleSubmit, reset } = methods;
+
+  useEffect(() => {
+    if (employeeData) {
+      reset(employeeData);
+    }
+  }, [employeeData, reset]);
 
   const onSubmit = async (formValues) => {
-    if (id) {
-      await updateEmployee(id, formValues);
-    } else {
-      await createEmployee(formValues);
+    try {
+      if (employeeData) {
+        await updateEmployee(employeeData.id, formValues);
+      } else {
+        await createEmployee(formValues);
+      }
+      onClose();
+      navigate('/employees');
+    } catch (err) {
+      console.error('Error saving employee:', err);
     }
-    navigate('/employees');
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Name</label>
-        <Field name="name" component="input" type="text" required />
-      </div>
-      <div>
-        <label>Email</label>
-        <Field name="email" component="input" type="email" required />
-      </div>
-      <div>
-        <label>Phone Number</label>
-        <Field name="phone" component="input" type="tel" required />
-      </div>
-      <div>
-        <label>Gender</label>
-        <Field name="gender" component="select">
-          <option value="">Select Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </Field>
-      </div>
-      <div>
-        <label>Assigned Café</label>
-        <Field name="cafeId" component="input" type="text" required />
-      </div>
-      <Button type="submit" disabled={pristine || submitting}>Submit</Button>
-      <Button type="button" onClick={() => navigate('/employees')}>Cancel</Button>
-    </form>
+    <FormProvider {...methods}>
+      <Grid container direction="column" alignItems="center" justifyContent="center">
+        <Paper elevation={1} style={{ padding: '30px', width: '350px' }}>
+          <h1>{employeeData ? 'Edit Employee' : 'Add New Employee'}</h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <TextInput
+              name="name"
+              label="Name"
+              rules={{ required: 'Name is required' }}
+            />
+            <TextInput
+              name="email_address"
+              label="Email"
+              rules={{
+                required: 'Email is required',
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: 'Email is not valid',
+                },
+              }}
+            />
+            <TextInput
+              name="phone_number"
+              label="Phone Number"
+              rules={{ required: 'Phone Number is required' }}
+            />
+            <TextInput
+              name="gender"
+              label="Gender"
+              rules={{ required: 'Gender is required' }}
+              select
+            >
+              <MenuItem value="">Select Gender</MenuItem>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </TextInput>
+            <TextInput
+              name="cafeId"
+              label="Cafe"
+              select
+              rules={{ required: 'Cafe selection is required' }}
+            >
+              <MenuItem value="">Select Cafe</MenuItem>
+              {cafesData && cafesData.map((cafe) => (
+                <MenuItem key={cafe.id} value={cafe.id}>{cafe.name}</MenuItem>
+              ))}
+            </TextInput>
+            <Button type="submit" variant="contained" color="primary" style={{ marginTop: '20px' }}>
+              Submit
+            </Button>
+            <Button variant="outlined" color="secondary" onClick={onClose} style={{ marginLeft: '5px', marginTop: '20px' }}>
+              Cancel
+            </Button>
+          </form>
+        </Paper>
+      </Grid>
+    </FormProvider>
   );
 };
 
-export default reduxForm({ form: 'employeeForm' })(EmployeeForm);
+export default EmployeeForm;

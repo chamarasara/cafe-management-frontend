@@ -1,4 +1,3 @@
-// src/api.js
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
@@ -15,7 +14,15 @@ export const useFetchCafes = (searchTerm) => {
   });
 };
 
-export const fetchEmployees = async (cafeId) => {
+export const fetchAllEmployees = async (cafeId) => {
+  const response = await fetch(`${API_URL}/employees`);
+  if (!response.ok) {
+      throw new Error('Failed to fetch employees');
+  }
+  return response.json();
+};
+
+export const fetchEmployeesByCafe = async (cafeId) => {
   const response = await fetch(`${API_URL}/cafes/${cafeId}/employees`);
   if (!response.ok) {
       throw new Error('Failed to fetch employees');
@@ -28,21 +35,21 @@ export const createCafe = async (cafe) => {
 };
 
 export const updateCafe = async (id, cafe) => {
-  return await axios.put(`${API_URL}/cafes/${id}`, cafe);
+  return await axios.put(`${API_URL}/cafe/${id}`, cafe);
 };
 
 export const useDeleteCafe = async (id) => {
-  return await axios.delete(`${API_URL}/cafes/${id}`);
+  return await axios.delete(`${API_URL}/cafe/${id}`);
 };
 
 export const createEmployee = async (employee) => {
-  return await axios.post(`${API_URL}/employees`, employee);
+  return await axios.post(`${API_URL}/employee`, employee);
 };
 
 export const updateEmployee = async (id, employee) => {
-  return await axios.put(`${API_URL}/employees/${id}`, employee);
+  return await axios.put(`${API_URL}/employee/${id}`, employee);
 };
 
 export const deleteEmployee = async (id) => {
-  return await axios.delete(`${API_URL}/employees/${id}`);
+  return await axios.delete(`${API_URL}/employee/${id}`);
 };

@@ -3,7 +3,7 @@ import Root from "./components/Root";
 import CafesPage from './pages/CafesPage'
 import EmployeesPage from './pages/EmployeesPage'
 import CafeForm from './components/CafeForm'
-import { fetchEmployees } from "./api";
+import { fetchAllEmployees, fetchEmployeesByCafe } from "./api";
 
 const rootRoute = createRootRoute({
     component: Root
@@ -31,14 +31,23 @@ const editCafeRoute = createRoute({
     },
 });
 
-const employeeListRoute = createRoute({
+const employeeList = createRoute({
     getParentRoute: () => rootRoute,
-    path: "$id",
+    path: "/employees",
     component: EmployeesPage,
-    loader: async ({ params }) => {
-        const { id } = params; 
-        return fetchEmployees(id); 
+    loader: async () => {
+        return fetchAllEmployees(); 
     },
 });
 
-export const routeTree = rootRoute.addChildren([indexRoute, addNewCafeRoute,editCafeRoute,  employeeListRoute])
+const employeeListByCafeRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: "$id", 
+    component: EmployeesPage,
+    loader: async ({ params }) => {
+        const { id } = params; 
+        return fetchEmployeesByCafe(id); 
+    },
+});
+
+export const routeTree = rootRoute.addChildren([indexRoute, addNewCafeRoute,editCafeRoute, employeeList, employeeListByCafeRoute])
