@@ -57,7 +57,13 @@ const EmployeeForm = ({ employeeData, onClose }) => {
             <TextInput
               name="phone_number"
               label="Phone Number"
-              rules={{ required: 'Phone Number is required' }}
+              rules={{
+                required: 'Phone Number is required',
+                pattern: {
+                  value: /^[89]\d{7}$/, 
+                  message: 'Phone number must start with 8 or 9 and be 8 digits long',
+                },
+              }}
             />
             <TextInput
               name="gender"
@@ -74,7 +80,6 @@ const EmployeeForm = ({ employeeData, onClose }) => {
               name="cafeId"
               label="Cafe"
               select
-              rules={{ required: 'Cafe selection is required' }}
             >
               <MenuItem value="">Select Cafe</MenuItem>
               {cafesData && cafesData.map((cafe) => (
