@@ -80,6 +80,7 @@ const EmployeeForm = ({ employeeData, onClose }) => {
               name="cafeId"
               label="Cafe"
               select
+              rules={{ required: 'Cafe selection is required' }}
             >
               <MenuItem value="">Select Cafe</MenuItem>
               {cafesData && cafesData.map((cafe) => (
