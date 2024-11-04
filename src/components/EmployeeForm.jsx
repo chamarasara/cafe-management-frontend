@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { Button, Grid, Paper, MenuItem } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useNavigate } from '@tanstack/react-router';
 import { createEmployee, updateEmployee, useFetchCafes } from '../api';
 import TextInput from './TextInput';
 
 const EmployeeForm = ({ employeeData, onClose }) => {
   const { data: cafesData } = useFetchCafes();
-  const navigate = useNavigate();
   const methods = useForm({
     defaultValues: employeeData || {},
   });

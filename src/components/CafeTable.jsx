@@ -2,7 +2,7 @@ import React from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { Button } from '@mui/material';
 import { Link } from '@tanstack/react-router';
-import { Visibility, Edit, Delete } from '@mui/icons-material'; 
+import { Edit, Delete } from '@mui/icons-material'; 
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 

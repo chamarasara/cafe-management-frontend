@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import TextInput from '../../components/TextInput';
 
-// Wrapper component to use useForm and provide it to the TextInput component
 const Wrapper = ({ children }) => {
   const methods = useForm();
   return <FormProvider {...methods}>{children}</FormProvider>;
