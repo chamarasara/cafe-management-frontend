@@ -77,7 +77,7 @@ const EmployeeForm = ({ employeeData, onClose }) => {
               <MenuItem value="Other">Other</MenuItem>
             </TextInput>
             <TextInput
-              name="cafeId"
+              name="cafe_Id"
               label="Cafe"
               select
               rules={{ required: 'Cafe selection is required' }}

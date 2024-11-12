@@ -14,7 +14,7 @@ export const useFetchCafes = (searchTerm) => {
   });
 };
 
-export const fetchAllEmployees = async (cafeId) => {
+export const fetchAllEmployees = async (cafe_Id) => {
   const response = await fetch(`${API_URL}/employees`);
   if (!response.ok) {
       throw new Error('Failed to fetch employees');
@@ -22,8 +22,8 @@ export const fetchAllEmployees = async (cafeId) => {
   return response.json();
 };
 
-export const fetchEmployeesByCafe = async (cafeId) => {
-  const response = await fetch(`${API_URL}/cafes/${cafeId}/employees`);
+export const fetchEmployeesByCafe = async (cafe_Id) => {
+  const response = await fetch(`${API_URL}/cafes/${cafe_Id}/employees`);
   if (!response.ok) {
       throw new Error('Failed to fetch employees');
   }
